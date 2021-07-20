@@ -1,0 +1,21 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+	long S, sum = 0;
+	int N = 1;
+	cin >> S;
+
+	while (true) {
+		sum += N;
+		if (sum > S) {
+			N -= 1;
+			break;
+		}
+		else if (sum == S)
+			break;
+
+		N++;
+	}
+	cout << N;
+}
