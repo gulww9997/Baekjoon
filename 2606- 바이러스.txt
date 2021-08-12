@@ -1,0 +1,33 @@
+#include <iostream>
+using namespace std;
+
+int com[101][101];
+bool visit[101];
+int n, m;
+int result;
+
+void virus(int x) {
+	visit[1] = true;
+	for (int i = 1; i <= n; i++) {
+		if (com[x][i] == 1 || com[i][x] == 1) {
+			if (visit[i] == false) {
+				result++;
+				visit[i] = true; // i번 컴퓨터 감염
+				virus(i);
+			}
+		}
+	}
+}
+
+int main() {
+	cin >> n >> m;
+	for (int i = 0; i < m; i++) {
+		int x, y;
+		cin >> x >> y;
+		com[x][y] = 1;
+		com[y][x] = 1;
+	}
+
+	virus(1);
+	cout << result;
+}
