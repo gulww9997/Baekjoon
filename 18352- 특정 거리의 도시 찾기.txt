@@ -1,0 +1,54 @@
+#include <iostream>
+#include <queue>
+#include <list>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int N, M, K, X;
+list<int> map[300001];
+
+void path(int* distance) {
+	bool check = false;
+	int now;
+	distance[X] = 0;
+	queue<int> q;
+	vector<int> index;
+	q.push(X);
+
+	while (!q.empty()) { // 큐가 빌 때 까지
+		now = q.front();
+		q.pop();
+		for (auto i = map[now].begin(); i != map[now].end(); i++) {
+			if (distance[*i] == -1) // 방문한 적 없으면
+				distance[*i] = distance[now] + 1;
+			q.push(*i);
+		}
+	}
+
+	for (int i = 1; i <= N; i++) {
+		if (distance[i] == K)
+			cout << i << endl;
+	}
+
+	if (!check)
+		printf("-1 \n");
+}
+
+
+int main() {
+	int distance[300001];
+
+	scanf("%d %d %d %d", &N, &M, &K, &X);
+	for (int i = 1; i <= M; i++) {
+		int x, y;
+		scanf("%d %d", &x, &y);
+		map[x].push_back(y);
+	}
+
+
+	for (int i = 1; i <= N; i++) // 최단거리 초기화
+		distance[i] = -1;
+
+	path(distance);
+}
