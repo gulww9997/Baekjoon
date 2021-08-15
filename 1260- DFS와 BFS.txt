@@ -1,0 +1,62 @@
+#include <iostream>
+#include <queue>
+using namespace std;
+
+int N, M, V;
+int graph[1001][1001];
+bool dfsCheck[1001];
+bool bfsCheck[1001];
+
+void dfs(int now) {
+	dfsCheck[V] = true;
+
+	for (int i = 1; i <= N; i++)
+		if (graph[now][i] == 1) {
+			if (dfsCheck[i] == false) {
+				dfsCheck[i] = true;
+				cout << i << " ";
+				dfs(i);
+			}
+		}
+}
+
+void bfs() {
+	bfsCheck[V] = true;
+	queue<int> q;
+	q.push(V);
+
+	while (!q.empty()) {
+		int now = q.front();
+		q.pop();
+
+		for (int i = 1; i <= N; i++) {
+			if (graph[now][i] == 1) {
+				if (bfsCheck[i] == false) {
+					bfsCheck[i] = true;
+					q.push(i);
+					cout << i << " ";
+				}
+			}
+		}
+	}
+}
+
+
+
+int main() {
+	cin >> N >> M >> V;
+	for (int i = 0; i < M; i++) {
+		int x, y;
+		cin >> x >> y;
+		graph[x][y] = 1;
+		graph[y][x] = 1;
+	}
+
+	cout << V << " ";
+	dfs(V);
+
+	cout << endl;
+
+	cout << V << " ";
+	bfs();
+}
