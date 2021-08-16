@@ -1,0 +1,77 @@
+#include <iostream>
+using namespace std;
+
+int N, M;
+int result;
+int map[8][8];
+int copyMap[8][8];
+int dx[] = { -1,1,0,0 };
+int dy[] = { 0,0,-1,1 };
+
+void virus(int y, int x) { // 바이러스가 퍼짐, DFS
+	for (int i = 0; i < 4; i++) {
+		int nx = x + dx[i];
+		int ny = y + dy[i];
+
+		if (nx >= 0 && nx < M && ny >= 0 && ny < N) {
+			if (copyMap[ny][nx] == 0) {
+				copyMap[ny][nx] = 2;
+				virus(ny, nx);
+			}
+		}
+	}
+}
+
+int safety() {
+	int temp = 0;
+
+	for (int i = 0; i < N; i++) { // 안전 구역 계산
+		for (int j = 0; j < M; j++) {
+			if (copyMap[i][j] == 0)
+				temp += 1;
+		}
+	}
+	return temp;
+}
+
+void safe(int wall) { // 3개의 벽을 세우고 안전 구역 크기 계산, DFS
+
+	if (wall == 3) {
+		for (int i = 0; i < N; i++) { // 임시 맵에 복사
+			for (int j = 0; j < M; j++)
+				copyMap[i][j] = map[i][j];
+		}
+
+		for (int i = 0; i < N; i++) // 바이러스 퍼뜨림
+			for (int j = 0; j < M; j++)
+				if (copyMap[i][j] == 2)
+					virus(i, j);
+
+		result = max(result, safety()); // 안전구역 최댓값
+	}
+	else {
+		for (int i = 0; i < N; i++) { // 3개의 벽 설치
+			for (int j = 0; j < M; j++) {
+				if (map[i][j] == 0) {
+					map[i][j] = 1;
+					wall += 1;
+					safe(wall);
+					map[i][j] = 0;
+					wall -= 1;
+				}
+			}
+		}
+	}
+}
+
+int main() {
+	cin >> N >> M;
+
+	for (int i = 0; i < N; i++)
+		for (int j = 0; j < M; j++) {
+			cin >> map[i][j];
+		}
+
+	safe(0);
+	cout << result;
+}
