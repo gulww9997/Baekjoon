@@ -1,0 +1,55 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int N;
+int maxValue = -INT32_MAX;
+int minValue = INT32_MAX;
+int op;
+int opPlus, opMinus, opMult, opDiv;
+int num[11];
+
+void dfs(int cnt, int now){
+
+	if (cnt == N) {
+		maxValue = max(maxValue, now);
+		minValue = min(minValue, now);
+	}
+	else {
+		if (opPlus > 0) {
+			opPlus -= 1;
+			dfs(cnt + 1, now + num[cnt]);
+			opPlus += 1;
+		}
+		if (opMinus > 0) {
+			opMinus -= 1;
+			dfs(cnt + 1, now - num[cnt]);
+			opMinus += 1;
+		}
+		if (opMult > 0) {
+			opMult -= 1;
+			dfs(cnt + 1, now * num[cnt]);
+			opMult += 1;
+		}
+		if (opDiv > 0) {
+			opDiv -= 1;
+			dfs(cnt + 1, now / num[cnt]);
+			opDiv += 1;
+		}
+	}
+}
+
+
+int main() {
+	cin >> N;
+	op = N - 1;
+
+	for (int i = 0; i < N; i++)
+		cin >> num[i];
+
+	cin >> opPlus >> opMinus >> opMult >> opDiv;
+	dfs(1, num[0]);
+	cout << maxValue << endl << minValue;
+
+}
