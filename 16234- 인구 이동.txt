@@ -1,0 +1,91 @@
+#include <iostream>
+#include <queue>	
+#include <cmath>
+using namespace std;
+
+int world[50][50];
+bool visit[50][50];
+bool isMove;
+bool finish = true;
+int dx[] = { -1,1,0,0 };
+int dy[] = { 0,0,-1,1 };
+int N, L, R;
+int group = 1;
+int people;
+int day;
+int average;
+queue<pair<int, int>> q;
+queue<pair<int, int>> q2;
+
+void bfs(int x, int y) {
+	q.push({ x,y });
+	q2.push({ x,y });
+	visit[x][y] = true;
+	people = world[x][y];
+
+	while (!q.empty()) {
+		int x = q.front().first;
+		int y = q.front().second;
+		q.pop();
+
+		for (int i = 0; i < 4; i++) {
+			int nx = x + dx[i];
+			int ny = y + dy[i];
+
+			if (visit[nx][ny] == false) {
+				if (nx >= 0 && nx < N && ny >= 0 && ny < N) {
+					if (abs(world[x][y] - world[nx][ny]) >= L && abs(world[x][y] - world[nx][ny]) <= R) {
+						q.push({ nx,ny });
+						q2.push({ nx,ny });
+						visit[nx][ny] = true;
+						group++;
+						people += world[nx][ny];
+						isMove = true;
+						finish = false;
+					}
+				}
+			}
+		}
+	}
+
+	if (isMove) {
+		average = people / group;
+
+		while (!q2.empty()) {
+			world[q2.front().first][q2.front().second] = average;
+			q2.pop();
+		}
+
+		isMove = false;
+		group = 1;
+		people = 0;
+	}
+}
+
+int main() {
+	cin >> N >> L >> R;
+
+	for (int i = 0; i < N; i++)
+		for (int j = 0; j < N; j++)
+			cin >> world[i][j];
+
+		while (true) {
+
+			for (int i = 0; i < N; i++)
+				for (int j = 0; j < N; j++)
+					if (visit[i][j] == false)
+						bfs(i, j);
+
+			if (finish)
+				break;
+
+			for (int i = 0; i < N; i++)
+				for (int j = 0; j < N; j++)
+					visit[i][j] = false;
+
+			finish = true;
+			day++;
+		}
+		          
+	cout << day;
+}
