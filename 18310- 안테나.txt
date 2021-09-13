@@ -1,0 +1,49 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include<cmath>
+using namespace std;
+
+int N;
+int result;
+vector<int> v;
+
+void antenna() {
+	int sum = 0;
+	int min = 0;
+	int start = v.size() / 2 - 1;
+
+	for (int i = 0; i < v.size(); i++) { // 중간값 - 1 부터 시작
+		min += abs(v[start] - v[i]);
+	}
+	result = v[start];
+	start++;
+
+	for (int i = 0; i < 2; i++) {
+
+		for (int i = 0; i < v.size(); i++) {
+			sum += abs(v[start] - v[i]);
+		}
+
+		if (sum < min) {
+			min = sum;
+			result = v[start];
+		}
+
+		sum = 0;
+		start++;
+	}
+}
+
+int main() {
+	cin >> N;
+	for (int i = 0; i < N; i++) {
+		int index;
+		scanf("%d", &index);
+		v.push_back(index);
+	}
+
+	sort(v.begin(), v.end());
+	antenna();
+	cout << result;
+}
