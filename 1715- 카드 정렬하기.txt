@@ -1,0 +1,36 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+using namespace std;
+
+int N;
+int sum;
+priority_queue<int, vector<int>, greater<int>> card;
+
+void cmp() {
+	while (true) {
+		int temp = card.top();
+		card.pop();
+
+		if (card.empty())
+			break;
+
+		temp += card.top();
+		card.pop();
+
+		sum += temp;
+		card.push(temp);
+	}
+}
+
+int main() {
+	cin >> N;
+	for (int i = 0; i < N; i++) {
+		int n;
+		cin >> n;
+		card.push(n);
+	}
+
+	cmp();
+	cout << sum;
+}
