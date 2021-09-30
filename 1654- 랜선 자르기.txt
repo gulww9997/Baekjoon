@@ -1,0 +1,41 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int N, K;
+long long len[10001];
+long long result;
+
+void cut() {
+	long long start = 1;
+	long long end = len[K - 1];
+	long long count = 0;
+
+	while (start <= end) {
+		long long mid = (start + end) / 2;
+
+		for (int i = 0; i < K; i++)
+			count += len[i] / mid;
+
+		if (count >= N) {
+			start = mid + 1;
+			result = mid;
+		}
+		else
+			end = mid - 1;
+
+		count = 0;
+	}
+}
+
+int main() {
+	cin >> K >> N;
+
+	for (int i = 0; i < K; i++)
+		scanf("%d", &len[i]);
+
+	sort(len, len + K);
+	cut();
+
+	cout << result;
+}
