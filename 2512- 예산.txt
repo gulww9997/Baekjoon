@@ -1,0 +1,44 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int N, M;
+int result;
+int money[10001];
+
+void budget() {
+	int start = 1;
+	int end = money[N - 1];
+
+	while (start <= end) {
+		int mid = (start + end) / 2;
+		int sum = 0;
+
+		for (int i = 0; i < N; i++)
+			if (money[i] < mid)
+				sum += money[i];
+			else
+				sum += mid;
+
+		if (sum > M) {
+			end = mid - 1;
+		}
+		else {
+			start = mid + 1;
+			result = mid;
+		}
+	}
+}
+
+
+int main() {
+	cin >> N;
+	for (int i = 0; i < N; i++)
+		scanf("%d", &money[i]);
+	cin >> M;
+
+	sort(money, money + N);
+
+	budget();
+	cout << result;
+}
