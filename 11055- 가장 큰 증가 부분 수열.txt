@@ -1,0 +1,28 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int N, result;
+int arr[1001];
+int dp[1001]; // dp[i]는 arr[i]를 마지막 원소로 갖는 증가 부분 수열의 합의 최대
+
+int main() {
+	cin >> N;
+	for (int i = 0; i < N; i++)
+		scanf("%d", &arr[i]);
+
+	for (int i = 0; i < N; i++)
+		dp[i] = arr[i];
+
+	for (int i = 0; i < N; i++) {
+		for (int j = i; j < N; j++) {
+			if (arr[i] < arr[j])
+				dp[j] = max(dp[j], dp[i] + arr[j]);
+		}
+	}
+
+	for (int i = 0; i < N; i++)
+		result = max(result, dp[i]);
+
+	cout << result;
+}
