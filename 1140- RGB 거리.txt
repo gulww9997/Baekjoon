@@ -1,0 +1,36 @@
+#include <iostream>
+using namespace std;
+
+int N;
+int result = 1000001;
+int home[1001][3]; // R G B 순으로 입력
+int dp[1001][3]; // dp[i][j]는 i번째 집까지 칠했을 때, 
+
+int main() {
+	cin >> N;
+	for (int i = 0; i < N; i++)
+		for (int j = 0; j < 3; j++)
+			scanf("%d", &home[i][j]);
+
+	for (int i = 0; i < 3; i++)
+		dp[0][i] = home[0][i];
+
+	for (int i = 0; i < N - 1; i++) {
+		for (int j = 0; j < 3; j++) {
+			if (j == 0) {
+				dp[i + 1][j] = home[i + 1][j] + min(dp[i][1], dp[i][2]);
+			}
+			if (j == 1) {
+				dp[i + 1][j] = home[i + 1][j] + min(dp[i][0], dp[i][2]);
+			}
+			if (j == 2) {
+				dp[i + 1][j] = home[i + 1][j] + min(dp[i][0], dp[i][1]);
+			}
+		}
+	}
+
+	for (int i = 0; i < 3; i++)
+		result = min(result, dp[N - 1][i]);
+
+	cout << result;
+}
