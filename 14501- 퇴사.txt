@@ -1,0 +1,27 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int N;
+int T[16];
+int P[16];
+int dp[16]; // dp[i]는 i일에 상담을 시작했을 때 최대 이익
+int result;
+
+int main() {
+	cin >> N;
+	for (int i = 1; i <= N; i++)
+		cin >> T[i] >> P[i];
+
+	for (int i = N; i >= 1; i--) {
+		int index = i + T[i];
+
+		if (index <= N + 1) {
+			dp[i] = max(P[i] + dp[index], result);
+			result = dp[i];
+		}
+		else
+			dp[i] = result;
+	}
+	cout << dp[1];
+}
