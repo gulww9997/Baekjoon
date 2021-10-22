@@ -1,0 +1,33 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int N, K;
+pair<int,int> item[101];
+int dp[101][100001]; // dp[i][w]은 무게 w를 넘지 않고 i번째 아이템까지 계산한 최대 이익
+                    // dp[i][w]는 i번째 아이템을 포함한 것과 포함하지 않은 것으로 나눈다.
+
+bool compare(pair<int, int> a, pair<int, int> b) {
+	return a.first < b.first;
+}
+
+int main() {
+	cin >> N >> K;
+	for (int i = 1; i <= N; i++) {
+		int w, v;
+		scanf("%d %d", &w, &v);
+		item[i] = { w,v };
+	}
+
+	sort(item, item + N, compare);
+
+	for (int i = 1; i <= N; i++) {
+		for (int w = 1; w <= K; w++) { // i번째 아이템까지의 최대 이익
+			if (w - item[i].first >= 0) // i번째 아이템 포함 가능하면
+				dp[i][w] = max(dp[i - 1][w], dp[i - 1][w - item[i].first] + item[i].second);
+			else // i번째 아이템 포함 불가능하면
+				dp[i][w] = dp[i - 1][w];
+		}
+	}
+	cout << dp[N][K];
+}
