@@ -1,0 +1,32 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+string N;
+int num[100001];
+bool isZero = false;
+int sum;
+
+bool cmp(int a, int b) { // 내림차순 정렬
+	return a > b;
+}
+
+int main() {
+	cin >> N;
+
+	for (int i = 0; i < N.size(); i++) {
+		if (N[i] == '0') // 0이 존재하면 isZero를 true로
+			isZero = true;
+
+		num[i] = N[i] - '0';
+		sum += N[i] - '0';
+	}
+
+	if (sum % 3 != 0 || isZero == false) // 3의 배수가 아니거나 10의 배수가 아니면
+		cout << "-1";
+	else {
+		sort(num, num + N.size(), cmp);
+
+		for (int i = 0; i < N.size(); i++)
+			cout << num[i];
+	}
+}
