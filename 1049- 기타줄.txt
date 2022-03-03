@@ -1,0 +1,48 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+int N, M;
+vector<pair<int, int>> brand;
+int packMin;
+int oneMin;
+int result;
+
+bool cmp1(pair<int, int> a, pair<int, int> b) {
+	return a.first < b.first;
+}
+
+bool cmp2(pair<int, int> a, pair<int, int> b) {
+	return a.second < b.second;
+}
+
+int main() {
+	cin >> N >> M;
+
+	for (int i = 0; i < M; i++) {
+		int pack, one;
+		cin >> pack >> one;
+		brand.push_back({ pack,one });
+	}
+
+	/* 1. 끊어진 줄의 개수가 6개보다 작을 때
+       2. 끊어진 줄의 개수가 6개보다 크거나 같을 때
+
+	   -> 패키지로만 사는 경우, 패키지 + 낱개로 사는 경우, 낱개만 사는 경우 를 비교
+	*/
+
+	sort(brand.begin(), brand.end(), cmp1);
+	packMin = brand[0].first; // 제일 싼 패키지 값
+
+	sort(brand.begin(), brand.end(), cmp2);
+	oneMin = brand[0].second; // 제일 싼 낱개 값
+
+	if (N <= 6) {
+		result = min(oneMin * N, packMin);
+		cout << result;
+	}
+	else {
+		result += min(packMin * (N / 6) + oneMin * (N % 6), min(packMin * (N / 6 + 1), oneMin * N)); // 반례 찾기!
+		cout << result;
+	}
+}
