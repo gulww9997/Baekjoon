@@ -1,0 +1,36 @@
+#include <iostream>
+#include <queue>
+
+long long n, m, sum = 0;
+using namespace std;
+
+int main() {
+	cin >> n >> m;
+	priority_queue<long long,vector<long long>,greater<long long>> card; // minheap
+
+	for (int i = 0; i < n; i++) {
+		int n;
+		cin >> n;
+		card.push(n);
+	}
+
+	while (m != 0) { // m번 병합
+		long long first = card.top(); // 제일 작은 수
+		card.pop();
+		long long second = card.top(); // 두번째로 작은 수
+		card.pop();
+
+		long long temp = first + second; // 제일 작은 두 수의 합
+		card.push(temp);
+		card.push(temp);
+
+		m--;
+	}
+
+	while (!card.empty()) {
+		sum += card.top();
+		card.pop();
+	}
+
+	cout << sum;
+}
