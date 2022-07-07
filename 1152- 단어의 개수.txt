@@ -1,0 +1,20 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+	string s;
+	// cin >> s; cin은 공백 받으면 끝남.
+	getline(cin, s); // getline()은 istream과 string 라이브러리에 속함.
+	int result = 1;
+
+	for (int i = 1; i < s.size() - 1; i++) { // 첫번째와 마지막은 검사 x
+		if (s[i] == ' ')
+			result++;
+	}
+
+	if (s[0] == ' ' && s.size() == 1) // 반례 처리
+		result = 0;
+
+	cout << result;
+}
